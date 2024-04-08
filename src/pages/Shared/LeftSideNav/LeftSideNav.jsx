@@ -29,8 +29,8 @@ const LeftSideNav = () => {
             <div className="mb-2">
                 <h2 className="text-2xl">News:{allNews.length}</h2>
                 {
-                    allNews.map(news => <div key={news.category_id} className="card w-96 bg-base-100 shadow-xl">
-                        <figure><img src={news.image_url} alt="Shoes" /></figure>
+                    allNews.map(news => <div key={news._id} className="card  bg-base-100 shadow-xl">
+                        <figure><img src={news.thumbnail_url} alt="Shoes" /></figure>
                         <div className="card-body space-y-4">
                             
                             <p className="text-xl font-semibold">{news.title}</p>

@@ -1,14 +1,47 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Navber from "../Shared/Navber/Navber";
+import { useContext, useState } from "react";
+import { AuthContext } from "../../providers/AuthProvider";
+import { useNavigate } from "react-router-dom";
+
 
 
 const Login = () => {
+
+    const {signInUser}  =  useContext(AuthContext);
+    const location = useLocation();
+    console.log('Locationin the logIn page',location);
+    const navigate= useNavigate()
+
+    // error handleing
+    const [logInError, setLogInError] =  useState();
+    const [success, setSuccess] = useState();
+
 
     const handleSubmit = e =>{
         e.preventDefault();
         console.log(e.currentTarget);
         const from =new FormData(e.currentTarget);
-        console.log(from.get('password'));
+        const email = from.get('email');
+        const password  = from.get('password');
+        console.log(email, password)
+
+        // reset message
+        setLogInError('');
+        setSuccess('');
+
+        signInUser(email, password)
+        .then(result => {
+            console.log(result.user)
+            setSuccess('LogIn Successfully')
+
+            // navigate after logIn
+            navigate(location?.state ? location.state : '/')
+        })
+        .catch(error => {
+                console.error(error)        
+            setLogInError("Worng Password")
+        })
     }
 
     return (
@@ -32,6 +65,10 @@ const Login = () => {
                             <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
                         </label>
                     </div>
+                    <p className="text-red-700">{logInError}</p>
+                    {
+                        <p className="text-green-600">{success}</p>
+                    }
                     <div className="form-control mt-6">
                         <button className="btn btn-primary">Login</button>
                     </div>
